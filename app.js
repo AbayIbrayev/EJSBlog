@@ -120,12 +120,28 @@ app.get("/posts/:postId", (req, res) => {
     (err, post) => {
       res.render("post", {
         title: post.title,
-        content: post.content
+        content: post.content,
+        id: post._id
       });
     }
   );
 });
 
-app.listen(process.env.PORT || 3000, function() {
+app.post("/delete", (req, res) => {
+  const postId = req.body.postId;
+  Post.findByIdAndRemove(postId, err => {
+    if (!err) {
+      console.log("Successfully deleted");
+      res.redirect("/");
+    }
+  });
+});
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+
+app.listen(port, function() {
   console.log("Server started");
 });
