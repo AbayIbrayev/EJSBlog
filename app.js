@@ -24,12 +24,15 @@ app.use(
 );
 app.use(express.static("public"));
 
-const posts = [];
+// const posts = [];
 
-mongoose.connect(`mongodb://localhost:27017/blogDB`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(
+  `mongodb+srv://admin-abay:${process.env.PASSWORD}@cluster0-pq8dc.mongodb.net/blogDB`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 const postSchema = {
   title: String,
@@ -43,7 +46,7 @@ app.post("/compose", (req, res) => {
     title: req.body.postTitle,
     content: req.body.postBody
   });
-  post.save((err) => {
+  post.save(err => {
     if (!err) {
       res.redirect("/");
     }
@@ -110,16 +113,19 @@ app.get("/posts/:postId", (req, res) => {
   //   }
   // });
 
-  Post.findOne({
-    _id: requestedId
-  }, (err, post) => {
-    res.render("post", {
-      title: post.title,
-      content: post.content
-    });
-  });
+  Post.findOne(
+    {
+      _id: requestedId
+    },
+    (err, post) => {
+      res.render("post", {
+        title: post.title,
+        content: post.content
+      });
+    }
+  );
 });
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log("Server started on port 3000");
+app.listen(process.env.PORT || 3000, function() {
+  console.log("Server started");
 });
