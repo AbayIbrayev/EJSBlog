@@ -48,9 +48,16 @@ app.post("/compose", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("home", {
-    homeStartingContent: homeStartingContent,
-    posts: posts
+  // res.render("home", {
+  //   homeStartingContent: homeStartingContent,
+  //   posts: posts
+  // });
+
+  Post.find({}, (err, posts) => {
+    res.render("home", {
+      homeStartingContent: homeStartingContent,
+      posts: posts
+    });
   });
 });
 
